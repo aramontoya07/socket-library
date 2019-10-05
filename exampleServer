@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include<commons/log.h>
+#include<commons/string.h>
+#include<commons/config.h>
+#include<readline/readline.h>
+#include</home/utnso/workspace/socketlib/servidor.h>
+
+int main(void) {
+	void iterator(char* value)
+		{
+			printf("%s\n", value);
+		}
+
+		logger = log_create("log.log", "Servidor", 1, LOG_LEVEL_DEBUG);
+
+		int server_fd = iniciar_servidor("4444");
+		log_info(logger, "Servidor listo para recibir al cliente");
+		int cliente_fd = aceptar_cliente(server_fd);
+
+		t_list* lista;
+		while(1)
+		{
+			int cod_op = dame_tu_protocolo_cliente(cliente_fd);
+			switch(cod_op)
+			{
+			case MENSAJE:
+				recibir_mensaje_del_cliente(cliente_fd);
+				break;
+			case PAQUETE:
+				lista = recibir_paquete(cliente_fd);
+				printf("Me llegaron los siguientes valores:\n");
+				list_iterate(lista, (void*) iterator);
+				break;
+			case -1:
+				log_error(logger, "el cliente se desconecto. Terminando servidor");
+				return EXIT_FAILURE;
+			default:
+				log_warning(logger, "Operacion desconocida. No quieras meter la pata");
+				break;
+			}
+		}
+		return EXIT_SUCCESS;
+}

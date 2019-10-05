@@ -1,0 +1,34 @@
+/*
+ ============================================================================
+ Name        : example.c
+ Author      : Ara
+ Version     :
+ Copyright   : Your copyright notice
+ Description : Hello World in C, Ansi-style
+ ============================================================================
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include<commons/log.h>
+#include<commons/string.h>
+#include<commons/config.h>
+#include<readline/readline.h>
+#include<socketlib/cliente.h>
+
+
+int main(void) {
+	char* palabra = "Hola!!";
+	enviar_palabra_al_servidor(palabra);
+	return EXIT_SUCCESS;
+}
+
+void enviar_palabra_al_servidor(char* palabra) {
+	t_log* logger = log_create("client.log", "CLIENTE", 1, LOG_LEVEL_INFO);
+	log_info(logger, "Soy un log");
+
+	int socket = conectar_a_servidor("127.0.0.1", "4444");
+	enviar_mensaje_al_servidor(palabra, socket);
+	log_destroy(logger);
+	close(socket);
+}
